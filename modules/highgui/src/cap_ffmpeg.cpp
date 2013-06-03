@@ -41,6 +41,8 @@
 
 #include "precomp.hpp"
 
+#include <pthread.h>
+
 #if defined HAVE_FFMPEG && !defined WIN32
 #include "cap_ffmpeg_impl.hpp"
 #else
