@@ -287,6 +287,10 @@ endif()
 set(OPENCV_CONFIG_FILE_INCLUDE_DIR "${CMAKE_BINARY_DIR}/" CACHE PATH "Where to create the platform-dependant cvconfig.h")
 ocv_include_directories(${OPENCV_CONFIG_FILE_INCLUDE_DIR})
 
+# ----------------------------------------------------------------------------
+#  Path for additional modules
+# ----------------------------------------------------------------------------
+set(OPENCV_EXTRA_MODULES_PATH "" CACHE PATH "Where to look for additional OpenCV modules")
 
 # ----------------------------------------------------------------------------
 #  Autodetect if we are in a GIT repository
@@ -403,7 +407,7 @@ if(ANDROID)
   if(NOT ANDROID_TOOLS_Pkg_Revision GREATER 13)
     message(WARNING "OpenCV requires Android SDK tools revision 14 or newer. Otherwise tests and samples will no be compiled.")
   endif()
-elseif(ANT_EXECUTABLE)
+else()
   find_package(JNI)
 endif()
 
@@ -457,15 +461,15 @@ if(BUILD_EXAMPLES OR BUILD_ANDROID_EXAMPLES OR INSTALL_PYTHON_EXAMPLES)
 endif()
 
 if(ANDROID)
-  add_subdirectory(android/service)
+  add_subdirectory(platforms/android/service)
 endif()
 
 if(BUILD_ANDROID_PACKAGE)
-  add_subdirectory(android/package)
+  add_subdirectory(platforms/android/package)
 endif()
 
 if (ANDROID)
-  add_subdirectory(android/libinfo)
+  add_subdirectory(platforms/android/libinfo)
 endif()
 
 # ----------------------------------------------------------------------------
@@ -840,7 +844,7 @@ status("    ant:"           ANT_EXECUTABLE      THEN "${ANT_EXECUTABLE} (ver ${A
 if(NOT ANDROID)
   status("    JNI:"         JNI_INCLUDE_DIRS    THEN "${JNI_INCLUDE_DIRS}"                                       ELSE NO)
 endif()
-status("    Java tests:"    BUILD_TESTS AND (NOT ANDROID OR CAN_BUILD_ANDROID_PROJECTS)                 THEN YES ELSE NO)
+status("    Java tests:"    BUILD_TESTS AND (CAN_BUILD_ANDROID_PROJECTS OR HAVE_opencv_java)            THEN YES ELSE NO)
 
 # ========================== documentation ==========================
 if(BUILD_DOCS)

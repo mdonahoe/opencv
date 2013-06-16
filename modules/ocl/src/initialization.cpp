@@ -337,6 +337,10 @@ namespace cv
                     oclinfo.push_back(ocltmpinfo);
                 }
             }
+            if(devcienums > 0)
+            {
+                setDevice(oclinfo[0]);
+            }
             return devcienums;
         }
 
@@ -423,12 +427,6 @@ namespace cv
         }
 
         void openCLMallocPitch(Context *clCxt, void **dev_ptr, size_t *pitch,
-                               size_t widthInBytes, size_t height)
-        {
-            openCLMallocPitchEx(clCxt, dev_ptr, pitch, widthInBytes, height, gDeviceMemRW, gDeviceMemType);
-        }
-
-        void openCLMallocPitchEx(Context *clCxt, void **dev_ptr, size_t *pitch,
                                  size_t widthInBytes, size_t height,
                                  DevMemRW rw_type, DevMemType mem_type, void* hptr)
         {
